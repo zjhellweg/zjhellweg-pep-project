@@ -125,4 +125,30 @@ public class MessageDAO {
         }
         return null;
     }
+
+    public Message UpdateMessage(int message_id, String newMessage){
+        Connection connection = ConnectionUtil.getConnection();
+        try {
+            String sql = "Update Message Set message_text = ? where message_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1,newMessage);
+            preparedStatement.setInt(2,message_id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while(rs.next()){
+                Message ReturnValue = new Message(
+                    rs.getInt("message_id"),
+                    rs.getInt("posted_by"),
+                    rs.getString("message_text"),
+                    rs.getLong("time_posted")
+                );
+                return ReturnValue;
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 }
