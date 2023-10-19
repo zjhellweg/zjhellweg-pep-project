@@ -61,6 +61,27 @@ public class AccountDAO {
         return null;
     }
 
+    public int getAccountNumberByName(String username){
+        Connection connection = ConnectionUtil.getConnection();
+        try {
+            //Write SQL logic here
+            String sql = "Select account_id From Account where username = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            //write preparedStatement's setInt method here.
+            preparedStatement.setString(1, username);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()){
+                int account = rs.getInt("account_ID");
+                return account;
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
+
     public Account getAccountByUsername(String username){
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -107,4 +128,5 @@ public class AccountDAO {
         }
         return null;
     }
+
 }
