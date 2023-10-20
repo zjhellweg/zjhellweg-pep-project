@@ -54,12 +54,4 @@ public class MessageService {
     public List<Message> allMessagesByUser(int posted_by){
         return messageDAO.getAllMessages(posted_by);
     }
-
-    public Account userLogin(Account account){
-        Account verificationAccount = accountDAO.getAccountByUsername(account.getUsername());
-        if(verificationAccount.getPassword().equals(account.getPassword())){
-            return verificationAccount;
-        }
-        return null;
-    }
 }
