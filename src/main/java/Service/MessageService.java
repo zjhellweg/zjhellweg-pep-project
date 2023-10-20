@@ -24,7 +24,7 @@ public class MessageService {
     }
 
     //Create Message
-    public Message addAccount(Message message){
+    public Message addMessage(Message message){
         if(
             message.getMessage_text().length() < 255 &&
             accountDAO.getAccountByAccountNumber(message.getPosted_by()) != null
