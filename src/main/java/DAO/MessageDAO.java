@@ -36,7 +36,7 @@ public class MessageDAO {
                     rs.getInt("message_id"),
                     rs.getInt("posted_by"),
                     rs.getString("message_text"),
-                    rs.getLong("time_posted")
+                    rs.getLong("time_posted_epoch")
                     );
                 messages.add(message);
             }
@@ -62,7 +62,7 @@ public class MessageDAO {
                     rs.getInt("message_id"),
                     rs.getInt("posted_by"),
                     rs.getString("message_text"),
-                    rs.getLong("time_posted")
+                    rs.getLong("time_posted_epoch")
                     );
                 messages.add(message);
             }
@@ -87,7 +87,7 @@ public class MessageDAO {
                     rs.getInt("message_id"),
                     rs.getInt("posted_by"),
                     rs.getString("message_text"),
-                    rs.getLong("time_posted")
+                    rs.getLong("time_posted_epoch")
                     );
                 return message;
             }
@@ -112,7 +112,7 @@ public class MessageDAO {
             ResultSet rs = preparedStatement.getResultSet();
             if(rs.next()){
                 int generatedMessageID = (int) rs.getInt("message_id");
-                long generatedTime = rs.getLong("time_posted");
+                long generatedTime = rs.getLong("time_posted_epoch");
                 return new Message(
                     generatedMessageID,
                     message.getPosted_by(),
@@ -141,7 +141,7 @@ public class MessageDAO {
                     rs.getInt("message_id"),
                     rs.getInt("posted_by"),
                     rs.getString("message_text"),
-                    rs.getLong("time_posted")
+                    rs.getLong("time_posted_epoch")
                 );
                 return ReturnValue;
             }
@@ -167,7 +167,7 @@ public class MessageDAO {
                     rs.getInt("message_id"),
                     rs.getInt("posted_by"),
                     rs.getString("message_text"),
-                    rs.getLong("time_posted")
+                    rs.getLong("time_posted_epoch")
                 );
                 return ReturnValue;
             }

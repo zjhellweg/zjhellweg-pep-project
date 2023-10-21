@@ -27,6 +27,7 @@ public class MessageService {
     public Message addMessage(Message message){
         if(
             message.getMessage_text().length() < 255 &&
+            message.getMessage_text().length() > 0 &&
             accountDAO.getAccountByAccountNumber(message.getPosted_by()) != null
         ){
             Message returnValue = messageDAO.insertMessage(message);
@@ -48,7 +49,11 @@ public class MessageService {
     }
 
     public Message updateMessageByID(int id, String message_text){
-        return messageDAO.UpdateMessage(id, message_text);
+        if(message_text.length() < 255 && message_text.length() > 0 ){
+            return messageDAO.UpdateMessage(id, message_text);
+        } else {
+            return null;
+        }
     }
 
     public List<Message> allMessagesByUser(int posted_by){
