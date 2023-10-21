@@ -66,6 +66,7 @@ public class SocialMediaController {
         Account account = mapper.readValue(ctx.body(), Account.class);
         Account addedAccount = accountService.addAccount(account);
         if(addedAccount != null){
+            ctx.json(addedAccount);
             ctx.status(200);
         } else {
             ctx.status(400);
@@ -76,13 +77,15 @@ public class SocialMediaController {
     private void loginUser(Context ctx) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
-        Account addedAccount = accountService.userLogin(account);
+        Account addedAccount;
+        addedAccount = accountService.userLogin(account);
         if(addedAccount != null){
+            ctx.json(addedAccount);
             ctx.status(200);
         } else {
             ctx.status(401);
         }
-        
+    
     }
 
     private void createMessage(Context ctx) throws JsonProcessingException{

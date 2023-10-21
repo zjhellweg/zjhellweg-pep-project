@@ -18,18 +18,23 @@ public class AccountService {
 
     //Create Account
     public Account addAccount(Account account){
-        if(account.getPassword().length() >= 4){
+        
+        if(account.getPassword().length() >= 4 && account.getUsername().length() > 0){
             if(accountDAO.getAccountByUsername(account.getUsername()) == null){
                 Account returnValue = accountDAO.insertAccount(account);
                 return returnValue;
             }
         }              
         return null;
+        
     }
 
-    public Account userLogin(Account account){
+    public Account userLogin(Account account) {
+        if (accountDAO.getAccountByUsername(account.getUsername()) == null) {
+            return null;
+        }
         Account verificationAccount = accountDAO.getAccountByUsername(account.getUsername());
-        if(verificationAccount.getPassword().equals(account.getPassword())){
+        if (verificationAccount.getPassword().equals(account.getPassword())) {
             return verificationAccount;
         }
         return null;
