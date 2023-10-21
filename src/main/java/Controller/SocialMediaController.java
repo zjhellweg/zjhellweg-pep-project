@@ -7,11 +7,15 @@ import Model.Message;
 import Service.AccountService;
 import Service.MessageService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.mockito.Answers.valueOf;
 
 import java.util.List;
+
+import org.h2.util.json.JSONObject;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
@@ -40,10 +44,10 @@ public class SocialMediaController {
         app.post("/login", this::loginUser);
         app.post("/messages",this::createMessage);
         app.get("/messages", this::getAllMessages);
-        app.get("/message/{message_id}",this::getGetMessageById);
+        app.get("/messages/{message_id}",this::getMessageById);
         app.delete("messages/{message_id}", this::deleteMessageById);
         app.patch("/messages/{message_id}",this::updateMessageById);
-        app.get("accounts/{account_id}/messages",this::getGetMessageById);
+        app.get("accounts/{account_id}/messages",this::getAllMessagesByUser);
 
         return app;
     }
@@ -99,11 +103,12 @@ public class SocialMediaController {
         ctx.status(200);
     }
 
-    private void getGetMessageById(Context ctx){
+    private void getMessageById(Context ctx){
+        ctx.status(200);
         int message_id = Integer.parseInt(ctx.pathParam("message_id"));
 
         Message message = messageService.getMessageByID(message_id);
-        ctx.json(message);
+        if(message!=null){ctx.json(message);}
         ctx.status(200);
     }
 
@@ -118,9 +123,10 @@ public class SocialMediaController {
         }
     }
 
-    private void updateMessageById(Context ctx) /*throws JsonProcessingException*/{
-        //ObjectMapper mapper = new ObjectMapper();
-        String message = ctx.body();
+    private void updateMessageById(Context ctx) throws JsonMappingException, JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = mapper.readTree(ctx.body());
+        String message =  jsonNode.get("message_text").asText();
 
         int message_id = Integer.parseInt(ctx.pathParam("message_id"));
         Message returnMessage = messageService.updateMessageByID(message_id, message);
@@ -133,9 +139,9 @@ public class SocialMediaController {
     }
 
     private void getAllMessagesByUser(Context ctx){
-        int userId = Integer.parseInt(ctx.pathParam("message_id"));
+        int userId = Integer.parseInt(ctx.pathParam("account_id"));
         List<Message> messages = messageService.allMessagesByUser(userId);
-        ctx.json(messages);
+        if(messages != null){ctx.json(messages);}
         ctx.status(200);
     }
     

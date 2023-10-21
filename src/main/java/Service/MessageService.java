@@ -40,20 +40,32 @@ public class MessageService {
         return messageDAO.getAllMessages();
     }
 
-    public Message getMessageByID(int id){
-        return messageDAO.getMessageByID(id);
+    public Message getMessageByID(int id) {
+        Message returnValue = messageDAO.getMessageByID(id);
+
+        return returnValue;
+
     }
 
     public Message deleteMessageByID(int id){
-        return messageDAO.deleteMessage(id);
+        Message returnValue = messageDAO.getMessageByID(id);
+        if(returnValue != null){
+            messageDAO.deleteMessage(id);
+        }
+        
+        if(messageDAO.getMessageByID(id) != null){
+            return returnValue;
+        }
+        return null;
     }
 
-    public Message updateMessageByID(int id, String message_text){
-        if(message_text.length() < 255 && message_text.length() > 0 ){
-            return messageDAO.UpdateMessage(id, message_text);
-        } else {
-            return null;
+    public Message updateMessageByID(int id, String message_text) {
+        if (message_text.length() < 255 && message_text.length() > 0) {
+                messageDAO.UpdateMessage(id, message_text);
+                return messageDAO.getMessageByID(id);
         }
+        return null;
+        
     }
 
     public List<Message> allMessagesByUser(int posted_by){
