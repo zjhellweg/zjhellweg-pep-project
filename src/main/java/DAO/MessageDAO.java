@@ -136,7 +136,7 @@ public class MessageDAO {
 
             preparedStatement.setInt(1,message_id);
 
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }

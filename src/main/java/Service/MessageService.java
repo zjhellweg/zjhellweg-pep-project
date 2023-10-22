@@ -53,7 +53,7 @@ public class MessageService {
             messageDAO.deleteMessage(id);
         }
         
-        if(messageDAO.getMessageByID(id) != null){
+        if(messageDAO.getMessageByID(id) == null){
             return returnValue;
         }
         return null;
